@@ -25,30 +25,30 @@
 
 package com.selcukcihan.xfacej;
 
-import java.applet.AudioClip;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.swing.JApplet;
+
 
 
 public class XFaceSound implements Runnable
 {
-	public volatile boolean m_play = false;
-	public void run()
-	{
-		AudioClip[] a = new AudioClip[1];
-		try
-		{
-			URL u = new URL("file:///C:\\code_space\\java\\eclipse\\XFace\\trunk\\face\\say-suffering-angina.wav");
-			a[0] = JApplet.newAudioClip(u);
-			while(!m_play);
-			a[0].loop();
-		}
-		catch (MalformedURLException e)
-		{
-			
-		}
-	}
+    public volatile boolean m_play = false;
+    public void run()
+    {
+        /*AudioClip[] a = new AudioClip[1];
+        try
+        {
+            URL u = new URL("file:///C:\\code_space\\java\\eclipse\\XFace\\trunk\\face\\say-suffering-angina.wav");
+            a[0] = JApplet.newAudioClip(u);
+            while(!m_play);
+            a[0].loop();
+        }
+        catch (MalformedURLException e)
+        {
+
+        }*/
+    }
 
 }

@@ -79,9 +79,9 @@ public class BinaryModelBatchLoader implements IModelLoader
 		return m_bLoaded;
 	}
 
-	public static int readUShortInt(RandomAccessFile p_fp) throws IOException
+	public static short readShort(RandomAccessFile p_fp) throws IOException
 	{
-		int retVal = 0;
+		short retVal = 0;
 		
 		int b = p_fp.readUnsignedByte();
 		retVal += b * 0x1;

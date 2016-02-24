@@ -32,7 +32,6 @@ package com.selcukcihan.xfacej.xengine;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.IntBuffer;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -40,7 +39,7 @@ import com.selcukcihan.xfacej.xmath.Vector3;
 
 public class IndexedFaceSet extends Geometry
 {
-	IntegerBuffer m_indices; // std::vector<unsigned short> m_indices;
+	ShortBuffer m_indices; // std::vector<unsigned short> m_indices;
 	
 	IndexedFaceSet(final String name)
 	{
@@ -58,11 +57,11 @@ public class IndexedFaceSet extends Geometry
 		super.readBinary(fp);
 		
 		int sz = BinaryModelBatchLoader.readUInt(fp); /* read c style uint */
-		m_indices = new IntegerBuffer(sz);
+		m_indices = new ShortBuffer(sz);
 		/* fp.read(m_indices.byteArray()); */
 		for(int i = 0; i < sz; i++)
 		{
-			m_indices.put(BinaryModelBatchLoader.readUShortInt(fp));
+			m_indices.put(BinaryModelBatchLoader.readShort(fp));
 		}
 		m_indices.rewind();		
 	}
@@ -116,7 +115,7 @@ public class IndexedFaceSet extends Geometry
 
 		super.copyFrom(rhs);
 		// copy data
-		m_indices = new IntegerBuffer(rhs.m_indices);
+		m_indices = new ShortBuffer(rhs.m_indices);
 		
 		return this;
 	}
@@ -128,21 +127,21 @@ public class IndexedFaceSet extends Geometry
 		return m_indices.size();
 	}
 	
-	public IntegerBuffer getIndices()
+	public ShortBuffer getIndices()
 	{
 		// const unsigned short* getIndices() const {return &m_indices[0];}//{return m_indices.getRawPointer();}
 		m_indices.rewind();
 		return m_indices;
 	}
 
-	public IntBuffer getIndicesGL()
+	public java.nio.ShortBuffer getIndicesGL()
 	{
 		// const unsigned short* getIndices() const {return &m_indices[0];}//{return m_indices.getRawPointer();}
 		m_indices.rewind();
-		return m_indices.intBuffer();
+		return m_indices.shortBuffer();
 	}
 	
-	public void setIndices2(final Vector<Vector<Integer>> indices)
+	public void setIndices2(final Vector<Vector<Short>> indices)
 	{
 		// void setIndices(const std::vector< std::vector<unsigned short> > &indices);
 		
@@ -151,20 +150,20 @@ public class IndexedFaceSet extends Geometry
 		 * ben de iki boyutlu vector parametresi kabul edene setIndices2 dedim, oburune de setIndices1 dedim
 		 * nerede hangisini cagiracagina dikkat et!!!
 		 */ 
-		Vector<Integer> tri_indices = new Vector<Integer>();
+		Vector<Short> tri_indices = new Vector<Short>();
 		
-		for(Enumeration<Vector<Integer>> e = indices.elements(); e.hasMoreElements();)
+		for(Enumeration<Vector<Short>> e = indices.elements(); e.hasMoreElements();)
 		{
-			Vector<Integer> cur = (Vector<Integer>)e.nextElement();
+			Vector<Short> cur = (Vector<Short>)e.nextElement();
 			
-			Enumeration<Integer> eInner = cur.elements();
-			Integer firstElement = (Integer)eInner.nextElement();
-			Integer curElement = (Integer)eInner.nextElement();
+			Enumeration<Short> eInner = cur.elements();
+			Short firstElement = (Short)eInner.nextElement();
+			Short curElement = (Short)eInner.nextElement();
 			do
 			{
 				tri_indices.add(firstElement);
 				tri_indices.add(curElement);
-				curElement = (Integer)eInner.nextElement();
+				curElement = (Short)eInner.nextElement();
 				tri_indices.add(curElement);
 			}while(eInner.hasMoreElements());
 		}// biraz kafa karistiriyor, c++ kodu aynen asagida
@@ -185,13 +184,13 @@ public class IndexedFaceSet extends Geometry
 		}
 		*/
 
-		m_indices = new IntegerBuffer(tri_indices);
+		m_indices = new ShortBuffer(tri_indices);
 	}
 	
-	public void setIndices1(final Vector<Integer> indices)
+	public void setIndices1(final Vector<Short> indices)
 	{
 		// void setIndices(const std::vector< unsigned short > &indices);
 		
-		m_indices = new IntegerBuffer(indices);
+		m_indices = new ShortBuffer(indices);
 	}
 }

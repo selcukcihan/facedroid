@@ -204,16 +204,6 @@ public class FAPFile extends IFapStream
 
 			if ( m_FAPs[i][12]!=0 && m_FAPs[i][59]==0)			//	2.5 VERT. 8.4 VERT. =>angoli della bocca
 				m_FAPs[i][59]=m_FAPs[i][12];
-			//if ( m_FAPs[i][59]!=0 && m_FAPs[i][12]==0)
-			//	{ m_FAPs[i][12]=m_FAPs[i][59]; }							
-			
-			//Le seguenti linee permettono di controllare che l'intrusione delle labbra non sia eccessiva
-			//arrivando a far vedere i denti.Da notare che come riferimento utilizzo la coordinata z 
-			//degli fdp 2.2 e 2.3 parametrizzate rispetto all'unità MNS.Il fattore 1/4 di cui viene scalato 
-			//il valore originario è empirico.
-			//NB: nessun limite per ora (6/6) sulla protusione.
-		//	if ( (m_FAPs[i][16]*MNS) < (fdp[2][2][2]*MNS) ) { m_FAPs[i][16]=m_FAPs[i][16]/4; }
-		//	if ( (m_FAPs[i][15]*MNS) < (fdp[2][3][2]*MNS) ) { m_FAPs[i][15]=m_FAPs[i][15]/4; }
 
 		}
 	}

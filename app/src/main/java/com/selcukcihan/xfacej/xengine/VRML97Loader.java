@@ -72,8 +72,8 @@ public class VRML97Loader implements IModelLoader
 		Vector<Vector3> vertices = new Vector<Vector3>();
 		Vector<Vertex2D> texCoords = new Vector<Vertex2D>();
 		Vector<Vector3> normals = new Vector<Vector3>();
-		Vector<Vector<Integer>> indices = new Vector<Vector<Integer>>();
-		Vector<Vector<Integer>> indicesTex = new Vector<Vector<Integer>>();
+		Vector<Vector<Short>> indices = new Vector<Vector<Short>>();
+		Vector<Vector<Short>> indicesTex = new Vector<Vector<Short>>();
 
 		while (nBlock > 0)
 		{
@@ -106,8 +106,8 @@ public class VRML97Loader implements IModelLoader
 		// unfortunately, in VRML97 format, this isn't a rule, so we enforce it here
 		if(!texCoords.isEmpty())
 		{
-			Iterator<Vector<Integer>> it, it_t;
-			Iterator<Integer> it2, it2_t;
+			Iterator<Vector<Short>> it, it_t;
+			Iterator<Short> it2, it2_t;
 			it_t = indicesTex.iterator();
 			it = indices.iterator();
 			while(it.hasNext())
@@ -200,7 +200,7 @@ public class VRML97Loader implements IModelLoader
 //		std::cout << "num texcoord: " << texCoords.size() << std::endl;
 	}
 	
-	private void onIndex(Scanner p_scanner, Vector<Vector<Integer>> store) throws IOException
+	private void onIndex(Scanner p_scanner, Vector<Vector<Short>> store) throws IOException
 	{
 		/*
 		 * void onIndex(std::istream& pStream, std::vector< std::vector<unsigned short> >& store) const;
@@ -214,7 +214,7 @@ public class VRML97Loader implements IModelLoader
 		boolean loopEnds = false; /* will be true when the character "]" is read */
 		while(!loopEnds)
 		{
-			Vector<Integer> polyInd = new Vector<Integer>();
+			Vector<Short> polyInd = new Vector<Short>();
 			while(true)
 			{
 				dummy = p_scanner.next();
@@ -226,7 +226,7 @@ public class VRML97Loader implements IModelLoader
 				ind = Long.parseLong(dummy);
 				if(ind == -1) /* -1 gormek, icerideki loopun bitmesi demektir */
 					break;
-				polyInd.add(new Integer((int)ind));
+				polyInd.add(new Short((short)ind));
 			}
 			store.add(polyInd);
 		}

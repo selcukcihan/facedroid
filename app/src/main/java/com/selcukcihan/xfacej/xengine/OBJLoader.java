@@ -59,7 +59,7 @@ public class OBJLoader implements IModelLoader
 	private Vector<Integer> m_Face;
 	private Vector<Integer> m_FaceTex;
 	private Vector<Integer> m_FaceNormal;
-	private Vector<Vector<Integer>> m_Indices;
+	private Vector<Vector<Short>> m_Indices;
 	private Vector<Vector<Integer>> m_IndicesTex;
 	private Vector<Vector<Integer>> m_IndicesNormal;
 
@@ -133,8 +133,10 @@ public class OBJLoader implements IModelLoader
 		// unfortunately, in OBJ format, this isn't a rule, so we enforce it here
 		if(!m_TexCoords.isEmpty())
 		{
-			Iterator<Vector<Integer>> it, it_t;
-			Iterator<Integer> it2, it2_t;
+			Iterator<Vector<Short>> it;
+			Iterator<Vector<Integer>> it_t;
+			Iterator<Integer> it2_t;
+			Iterator<Short> it2;
 			it_t = m_IndicesTex.iterator();
 			it = m_Indices.iterator();
 			while(it.hasNext())

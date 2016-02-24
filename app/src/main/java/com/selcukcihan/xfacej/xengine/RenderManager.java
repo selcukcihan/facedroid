@@ -30,6 +30,8 @@ package com.selcukcihan.xfacej.xengine;
  * bitti.
  */
 
+import android.opengl.GLSurfaceView;
+
 import java.util.LinkedList;
 
 import javax.microedition.khronos.opengles.GL11;

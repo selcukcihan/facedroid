@@ -30,9 +30,11 @@ package com.selcukcihan.xfacej.xengine;
  * bitti.
  */
 
+import android.opengl.GLUtils;
+
+import java.io.IOException;
 import java.util.LinkedList;
 
-import javax.media.opengl.glu.GLU;
 import javax.microedition.khronos.opengles.GL11;
 
 public class TextureLoaderGL implements ITextureLoader
@@ -64,40 +66,39 @@ public class TextureLoaderGL implements ITextureLoader
 		
 		if(pTexture == null)
 			return false;
-		// make a format check and use base class pointer for loader
-		ITextureFile loader = null;
-		
-		if(filename.endsWith(".bmp"))
-			loader = new BMPFile();
-		else
-			return false;
-		
-		if(!loader.load(filename))
+		if(!filename.endsWith(".bmp"))
 			return false;
 
-		// Generate a texture with the associative texture ID stored in the array
-		p_gl.glGenTextures(1, pTexture.m_TexID);
+		try {
+			// Generate a texture with the associative texture ID stored in the array
+			p_gl.glGenTextures(1, pTexture.m_TexID);
 
-		// This sets the alignment requirements for the start of each pixel row in memory.
-		p_gl.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+			// This sets the alignment requirements for the start of each pixel row in memory.
+			p_gl.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
 
-		// Bind the texture to the texture arrays index and init the texture
-		p_gl.glBindTexture(GL11.GL_TEXTURE_2D, pTexture.getTextureID().get(0));
+			// Bind the texture to the texture arrays index and init the texture
+			p_gl.glBindTexture(GL11.GL_TEXTURE_2D, pTexture.getTextureID().get(0));
 
-		p_gl.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
-		// Lastly, we need to tell OpenGL the quality of our texture map.  GL_LINEAR is the smoothest.
-		// GL_NEAREST is faster than GL_LINEAR, but looks blochy and pixelated.  Good for slower computers though.
-		// Read more about the MIN and MAG filters at the bottom of main.cpp	
-		p_gl.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_MAG_FILTER,GL11.GL_LINEAR);
-		p_gl.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_MIN_FILTER,GL11.GL_LINEAR_MIPMAP_NEAREST);
-		
-		final GLU glu = new GLU();
-		// Build Mipmaps (builds different versions of the picture for distances - looks better)
-		//glu.gluBuild2DMipmaps(GL.GL_TEXTURE_2D, 3, loader.getWidth(), loader.getHeight(), GL.GL_BGRA, GL.GL_UNSIGNED_BYTE, loader.getData());
-        glu.gluBuild2DMipmaps(GL11.GL_TEXTURE_2D, GL11.GL_RGB8, loader.getWidth(), loader.getHeight(), GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, loader.getData());
+			p_gl.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
+			// Lastly, we need to tell OpenGL the quality of our texture map.  GL_LINEAR is the smoothest.
+			// GL_NEAREST is faster than GL_LINEAR, but looks blochy and pixelated.  Good for slower computers though.
+			// Read more about the MIN and MAG filters at the bottom of main.cpp
+			p_gl.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_MAG_FILTER,GL11.GL_LINEAR);
+			p_gl.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_MIN_FILTER,GL11.GL_LINEAR_MIPMAP_NEAREST);
 
-		m_TextureList.add(pTexture.getTextureID().get(0));
+			//final GLU glu = new GLU();
+			// Build Mipmaps (builds different versions of the picture for distances - looks better)
+			//glu.gluBuild2DMipmaps(GL.GL_TEXTURE_2D, 3, loader.getWidth(), loader.getHeight(), GL.GL_BGRA, GL.GL_UNSIGNED_BYTE, loader.getData());
+			//glu.gluBuild2DMipmaps(GL11.GL_TEXTURE_2D, GL11.GL_RGB8, loader.getWidth(), loader.getHeight(), GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, loader.getData());
 
+			p_gl.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
+
+			GLUtils.texImage2D(GL11.GL_TEXTURE_2D, 0, BitmapLoader.loadBitmap(filename), 0);
+			m_TextureList.add(pTexture.getTextureID().get(0));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 		return true;
 	}
 }

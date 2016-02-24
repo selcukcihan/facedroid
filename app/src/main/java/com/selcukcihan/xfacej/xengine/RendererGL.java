@@ -31,6 +31,8 @@ package com.selcukcihan.xfacej.xengine;
  * sanirim kullanmiycam buffer extensionlarini simdilik
  */
 
+import android.opengl.GLSurfaceView;
+
 import com.selcukcihan.xfacej.xmath.Vector3;
 
 import javax.microedition.khronos.opengles.GL11;
@@ -67,15 +69,7 @@ public class RendererGL implements IRenderer
 		// void initGLExtensions();
 		// burayla ilgilenmek gerekebilir, acep w.mobilede nasil halletmistim burayi? ici bostu sanirim yine
 	}
-	
-	public void prepareBufferedMesh(IndexedFaceSet mesh)
-	{
-		// void prepareBufferedMesh(IndexedFaceSet* pMesh);
-		
-		if(!isExtSupported(XGL_EXTENSIONS.XGL_ARB_vertex_buffer_object))
-			return;
-	}
-	
+
 	private void deleteBuffers(GL11 p_gl)
 	{
 		// void deleteBuffers();
@@ -85,10 +79,10 @@ public class RendererGL implements IRenderer
 
 		for(int id = 1; id<m_maxBufferID; ++id)
 		{
-			if(p_gl.glIsBufferARB(id))
+			if(p_gl.glIsBuffer(id))
 			{
 				int [] buf = { id };
-				p_gl.glDeleteBuffersARB(1, buf, 0);
+				p_gl.glDeleteBuffers(1, buf, 0);
 			}
 		}
 	}
@@ -122,7 +116,7 @@ public class RendererGL implements IRenderer
 		}
 
 		p_gl.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-		p_gl.glDrawElements(GL11.GL_TRIANGLES, mesh.getIndexCount(), GL11.GL_UNSIGNED_INT, mesh.getIndicesGL());
+		p_gl.glDrawElements(GL11.GL_TRIANGLES, mesh.getIndexCount(), GL11.GL_UNSIGNED_SHORT, mesh.getIndicesGL());
 		//glDrawArrays( GL_TRIANGLES, 0, mesh.getIndexCount()/3);
 		
 		p_gl.glDisableClientState( GL11.GL_VERTEX_ARRAY );
@@ -137,7 +131,7 @@ public class RendererGL implements IRenderer
 	private void doTransform(final Transform trans, GL11 p_gl)
 	{
 		// void doTransform(const Transform& trans) const;
-		
+
 		p_gl.glMultMatrixf(trans.getWorldTransform());
 	}
 
@@ -205,5 +199,4 @@ public class RendererGL implements IRenderer
 		
 		return m_supported[ext.ordinal()];
 	}
-
 }

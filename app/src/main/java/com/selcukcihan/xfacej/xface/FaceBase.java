@@ -73,7 +73,7 @@ public class FaceBase
 		m_animProcessor = new AnimProcessor();
 	}
 	
-	private boolean initMorphTargets(final HashMap<String, LinkedList<MeshInfo>> targets, final String path, GL p_gl)
+	private boolean initMorphTargets(final HashMap<String, LinkedList<MeshInfo>> targets, final String path, GL11 p_gl)
 	{
 		/*
 		 * bool initMorphTargets(const std::map<std::string, std::list<XEngine::MeshInfo> >& targets, const std::string& path );
@@ -268,7 +268,7 @@ public class FaceBase
 		// if we already have an object and re-initing
 		reset(p_gl);
 
-		FDPLoader fdp_file = new FDPLoader();
+		SimpleFDPLoader fdp_file = new SimpleFDPLoader(null);
 		
 		if(fdp_file.load(path + filename, m_pFDP))
 		{

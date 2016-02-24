@@ -34,9 +34,6 @@ import javax.microedition.khronos.opengles.GL11;
 
 public interface IRenderer
 {
-	
 	public void render(Drawable pDrawable, GL11 p_gl); // virtual void render(boost::shared_ptr<Drawable> pDrawable) const = 0;
 	public void setTransform(final Transform tr); // virtual void setTransform(const Transform& tr) = 0;
-	public void prepareBufferedMesh(IndexedFaceSet pMesh); // virtual void prepareBufferedMesh(IndexedFaceSet* pMesh) = 0;
-
 }

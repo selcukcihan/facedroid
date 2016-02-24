@@ -28,6 +28,7 @@ package com.selcukcihan.xfacej.xmath;
 
 import com.selcukcihan.xfacej.xengine.IndexedFaceSet;
 import com.selcukcihan.xfacej.xengine.IntegerBuffer;
+import com.selcukcihan.xfacej.xengine.ShortBuffer;
 import com.selcukcihan.xfacej.xengine.Vector3Buffer;
 
 /*
@@ -100,7 +101,7 @@ namespace XMath{
 	{
 		// bool intersectMeshRay3(const IndexedFaceSet* pMesh, const Ray3& ray, unsigned short& index);
 		Vector3Buffer pVert = pMesh.getVertices();
-		IntegerBuffer pInd = pMesh.getIndices();
+		ShortBuffer pInd = pMesh.getIndices();
 		double [] t = new double[1];
 		double [] u = new double[1];
 		double [] v = new double[1]; // unused vars for now
@@ -149,7 +150,7 @@ namespace XMath{
 	{
 		// bool intersectMeshRay3(const IndexedFaceSet* pMesh, const Ray3& ray, Vector3& pnt);
 		Vector3Buffer pVert = pMesh.getVertices();
-		IntegerBuffer pInd = pMesh.getIndices();
+		ShortBuffer pInd = pMesh.getIndices();
 		double [] t = new double[1];
 		double [] u = new double[1];
 		double [] v = new double[1]; // unused vars for now

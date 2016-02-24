@@ -63,7 +63,7 @@ public class ModelFileFactory
 		return null;
 	}
 	
-	public static boolean initBinaryLoader(final String filename, final String path, GL gl)
+	public static boolean initBinaryLoader(final String filename, final String path, GL11 gl)
 	{
 		/*
 		 * static bool initBinaryLoader(const std::string& filename, const std::string& path);
