@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<xfdp>
+
+  <!--XFaceEd generated MPEG-4 FDP specification file-->
+
+  <!--Header information for the model-->
+
+
+    <head>
+        <file version="0.2"/>
+        <fapu ENS0="51" ES0="69" IRISD0="16" MNS0="30" MW0="50"/>
+        <translation x="0" y="-1" z="-659"/>
+        <rotation axis_angle="0.407589" axis_x="-0.999632" axis_y="-0.0154467" axis_z="0.0223226"/>
+    </head>
+  <!--3D model files (mesh) configuration-->
+
+  <source>
+    <entity alias="Rest" category="Expression">
+            <mesh file="alice.wrl" format="wrl"/>
+    </entity>
+  </source>
+
+  <fdp affects="" index="0" name="2.2"/>
+
+</xfdp>
