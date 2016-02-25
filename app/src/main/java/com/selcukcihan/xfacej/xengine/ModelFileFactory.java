@@ -30,6 +30,8 @@ package com.selcukcihan.xfacej.xengine;
  * saveAllFilesBinary metodu haric tamam. o da zaten simdilik kullanilmiyor, sanirim XFaceED'de kullanilmis
  */
 
+import android.content.Context;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -63,12 +65,12 @@ public class ModelFileFactory
 		return null;
 	}
 	
-	public static boolean initBinaryLoader(final String filename, final String path, GL11 gl)
+	public static boolean initBinaryLoader(Context context, final String filename, final String path, GL11 gl)
 	{
 		/*
 		 * static bool initBinaryLoader(const std::string& filename, const std::string& path);
 		 */
-		s_pBinaryBatchLoader = new BinaryModelBatchLoader();
+		s_pBinaryBatchLoader = new BinaryModelBatchLoader(context);
 		return s_pBinaryBatchLoader.init(filename, path, gl);
 	}
 	
@@ -95,7 +97,7 @@ public class ModelFileFactory
 		 */
 		return s_filenames.isEmpty();
 	}
-	public static LinkedList<Drawable> loadModelFile(final String filename, final String path, GL11 p_gl)
+	public static LinkedList<Drawable> loadModelFile(Context context, final String filename, final String path, GL11 p_gl)
 	{
 		/*
 		 * static std::list<boost::shared_ptr<Drawable> > loadModelFile(const std::string& filename, const std::string& path = "./");
@@ -146,7 +148,7 @@ public class ModelFileFactory
 			if(version.equals("V1.0"))
 				pLoader = new VRML1Loader();
 			else
-				pLoader = new VRML97Loader();
+				pLoader = new VRML97Loader(context);
 		}
 		else 
 			return drawables;

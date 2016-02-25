@@ -30,6 +30,7 @@ package com.selcukcihan.xfacej.xengine;
  * bitti.
  */
 
+import android.content.Context;
 import android.opengl.GLUtils;
 
 import java.io.IOException;
@@ -41,11 +42,11 @@ public class TextureLoaderGL implements ITextureLoader
 {
 	private LinkedList<Integer> m_TextureList;
 	
-	//private final GL m_gl;
+	private final Context mContext;
 	
-	public TextureLoaderGL()
+	public TextureLoaderGL(Context context)
 	{
-		//m_gl = gl;
+		mContext = context;
 		m_TextureList = new LinkedList<Integer>();
 	}
 
@@ -93,7 +94,7 @@ public class TextureLoaderGL implements ITextureLoader
 
 			p_gl.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
 
-			GLUtils.texImage2D(GL11.GL_TEXTURE_2D, 0, BitmapLoader.loadBitmap(filename), 0);
+			GLUtils.texImage2D(GL11.GL_TEXTURE_2D, 0, BitmapLoader.loadBitmap(mContext, filename), 0);
 			m_TextureList.add(pTexture.getTextureID().get(0));
 		} catch (IOException e) {
 			e.printStackTrace();

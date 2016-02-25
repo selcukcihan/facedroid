@@ -33,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mGLView = new GLSurfaceView(this);
-
-        mXFaceApp = new XFaceApplication(mGLView);
+        mGLView.setRenderer(new GLRenderer(new XFaceApplication(this)));
 
         setContentView(mGLView);
     }
@@ -42,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        mXFaceApp.onResumePlayback();
     }
 
     @Override

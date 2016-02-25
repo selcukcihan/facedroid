@@ -30,6 +30,8 @@ package com.selcukcihan.xfacej.xengine;
  * tamamlandi.
  */
 
+import android.content.Context;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -41,10 +43,12 @@ public class TextureManager
 	private Hashtable<String, ITexture> m_Storage = new Hashtable<String, ITexture>();
 	private static TextureManager m_pThisTexMan;
 	private ITextureLoader m_pTexLoader;
+	private final Context mContext;
 	
-	TextureManager()
+	TextureManager(Context context)
 	{
-		m_pTexLoader = new TextureLoaderGL();
+		mContext = context;
+		m_pTexLoader = new TextureLoaderGL(mContext);
 	}
 	
 	public ITexture load(final String filename, final String texname, GL11 p_gl)
@@ -77,10 +81,10 @@ public class TextureManager
 		m_pThisTexMan = null;
 	}
 	
-	public static TextureManager getInstance()
+	public static TextureManager getInstance(Context context)
 	{
 		if(m_pThisTexMan == null)
-			m_pThisTexMan = new TextureManager();
+			m_pThisTexMan = new TextureManager(context);
 		return m_pThisTexMan;
 	}
 	

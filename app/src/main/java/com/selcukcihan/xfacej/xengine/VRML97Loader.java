@@ -30,6 +30,8 @@ package com.selcukcihan.xfacej.xengine;
  * bitti.
  */
 
+import android.content.Context;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -49,11 +51,11 @@ import javax.microedition.khronos.opengles.GL11;
 
 public class VRML97Loader implements IModelLoader
 {
-	//private GL m_gl;
+	private final Context mContext;
 	
-	public VRML97Loader()
+	public VRML97Loader(Context context)
 	{
-		//m_gl = _gl;
+		mContext = context;
 	}
 	
 	private IndexedFaceSet onIndexedFaceSet(Scanner p_scanner, final String label) throws IOException
@@ -322,7 +324,7 @@ public class VRML97Loader implements IModelLoader
 						// the filename is stored in double quotes, let's get rid of them
 						texname = texname.substring(1);
 						texname = texname.substring(0, texname.length()-1);
-						TextureManager.getInstance().load(dir + texname, texname, p_gl);
+						TextureManager.getInstance(mContext).load(texname, texname, p_gl);
 						pDrawable.setTexName(texname, 0);
 	//					std::cout << texname << "\n";
 					}

@@ -31,6 +31,7 @@ package com.selcukcihan.xfacej.xengine;
  * sanirim kullanmiycam buffer extensionlarini simdilik
  */
 
+import android.content.Context;
 import android.opengl.GLSurfaceView;
 
 import com.selcukcihan.xfacej.xmath.Vector3;
@@ -53,10 +54,12 @@ public class RendererGL implements IRenderer
 	};
 	
 	private Transform m_globalTransform = null;
+
+	private final Context mContext;
 	
-	public RendererGL()
+	public RendererGL(Context context)
 	{
-		// RendererGL(void);
+		mContext = context;
 		
 		m_maxBufferID = 0;
 		m_globalTransform = new Transform();
@@ -174,7 +177,7 @@ public class RendererGL implements IRenderer
 		
 		if(pDrawable.isTextureOn())
 		{
-			final ITexture pTexture = TextureManager.getInstance().getTexture(pDrawable.getTexName(0));
+			final ITexture pTexture = TextureManager.getInstance(mContext).getTexture(pDrawable.getTexName(0));
 			if(pTexture != null)
 				doTexture(pTexture, p_gl);
 		}

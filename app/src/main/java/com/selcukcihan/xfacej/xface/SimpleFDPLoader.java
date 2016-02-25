@@ -27,6 +27,7 @@ package com.selcukcihan.xfacej.xface;
 
 import android.content.Context;
 
+import com.selcukcihan.android.facedroid.R;
 import com.selcukcihan.xfacej.xengine.MeshInfo;
 import com.selcukcihan.xfacej.xmath.Vector3;
 
@@ -36,7 +37,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -114,8 +118,7 @@ public class SimpleFDPLoader
         {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.parse(mContext.getResources().openRawResource(mContext.getResources().getIdentifier("alice",
-					"xml", mContext.getPackageName())));
+			Document doc = db.parse(mContext.getResources().openRawResource(R.raw.alice), "UTF-8");
 	        retVal = parse(doc);
         } catch (ParserConfigurationException e) {
 			e.printStackTrace();
@@ -417,7 +420,7 @@ public class SimpleFDPLoader
 				
 				try
 				{
-					Class c = Class.forName("xface." + attrList.getNamedItem("type").getNodeValue());
+					Class c = Class.forName("com.selcukcihan.xfacej.xface." + attrList.getNamedItem("type").getNodeValue());
 					IInfluenceCalculator pInfluence = (IInfluenceCalculator)c.newInstance();
 					if(pInfluence != null)
 					{

@@ -30,6 +30,8 @@ package com.selcukcihan.xfacej.xface;
  * bitti.
  */
 
+import android.content.Context;
+
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -59,13 +61,13 @@ public class FaceBase
 	private FaceEntity m_face;
 	private LinkedList<String> m_filenames;
 
+	private final Context mContext;
+
 	//private GL m_gl;
 	
-	public FaceBase()
+	public FaceBase(Context context)
 	{
-		/*
-		 * FaceBase();
-		 */
+		mContext = context;
 		m_errorString = "";
 		m_filenames = new LinkedList<String>();
 		//m_gl = gl;
@@ -89,7 +91,7 @@ public class FaceBase
 			{
 				String total_path = path + it_meshInfos.path;
 				// we do not use the format, we resolve it inside the loader
-				LinkedList<Drawable> drawables = ModelFileFactory.loadModelFile(it_meshInfos.file, total_path, p_gl);
+				LinkedList<Drawable> drawables = ModelFileFactory.loadModelFile(mContext, it_meshInfos.file, total_path, p_gl);
 				if(drawables.size() == 0)
 					m_errorString += "Could not load mesh: " + it_meshInfos.file + "\n";
 				else			
@@ -134,7 +136,7 @@ public class FaceBase
 		 * void reset();
 		 */
 		releaseMeshes();
-		TextureManager.getInstance().destroyAll(p_gl); // clear the textures
+		TextureManager.getInstance(mContext).destroyAll(p_gl); // clear the textures
 		m_face.release(true);
 		m_pFDP = new FDP();
 		m_errorString = "";
@@ -268,14 +270,14 @@ public class FaceBase
 		// if we already have an object and re-initing
 		reset(p_gl);
 
-		SimpleFDPLoader fdp_file = new SimpleFDPLoader(null);
+		SimpleFDPLoader fdp_file = new SimpleFDPLoader(mContext);
 		
 		if(fdp_file.load(path + filename, m_pFDP))
 		{
 			String datname = filename.substring(0, filename.length() - 3) + "dat";
 
 			ModelFileFactory.unloadAllFiles();
-			ModelFileFactory.initBinaryLoader(datname, path, p_gl);
+			ModelFileFactory.initBinaryLoader(mContext, datname, path, p_gl);
 			MorphController.getInstance().clearDictionary();
 			
 			// initialize the textures and meshes
@@ -313,7 +315,7 @@ public class FaceBase
 		{
 			String total_path = path + meshInfo.path;
 			// we do not use the format, we resolve it inside the loader
-			LinkedList<Drawable> drawables = ModelFileFactory.loadModelFile(meshInfo.file, total_path, p_gl);
+			LinkedList<Drawable> drawables = ModelFileFactory.loadModelFile(mContext, meshInfo.file, total_path, p_gl);
 			if(!drawables.isEmpty())
 			{
 				m_face.addDrawables(drawables); 

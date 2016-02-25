@@ -25,6 +25,7 @@
 
 package com.selcukcihan.xfacej;
 
+import android.content.Context;
 import android.opengl.GLSurfaceView;
 
 import java.io.File;
@@ -52,7 +53,7 @@ import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 
-public class XFaceApplication implements GLSurfaceView.Renderer
+public class XFaceApplication
 {
     private volatile boolean m_lock = false;
 
@@ -62,20 +63,6 @@ public class XFaceApplication implements GLSurfaceView.Renderer
     private static int m_missed_frames = 0;
     private static float m_frame_time = -1;
 
-    @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-
-    }
-
-    @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
-
-    }
-
-    @Override
-    public void onDrawFrame(GL10 gl) {
-
-    }
 
     //public GL m_gl;
 
@@ -91,20 +78,17 @@ public class XFaceApplication implements GLSurfaceView.Renderer
     private IRenderer m_pRenderer;
     private IFapStream m_pFapStream;
 
-    private final GLSurfaceView m_canvas;
+    private final Context mContext;
 
-    public XFaceApplication(GLSurfaceView p_canvas)
+    public XFaceApplication(Context context)
     {
-        //m_gl = p_gl;
-        m_canvas = p_canvas;
+        mContext = context;
 
-        m_pRenderer = new RendererGL();
+        m_pRenderer = new RendererGL(context);
         m_renderManager = new RenderManager();
-        m_pFace = new FaceBase();
+        m_pFace = new FaceBase(mContext);
         m_pTimer = new XFaceTimer();
         m_pFapStream = new FAPFile();
-
-        m_canvas.setRenderer(new GLRenderer());
 
         m_renderManager.setRenderer(m_pRenderer);
         m_pFace.addPhonemeDictionary(XFaceApplication.class.getResourceAsStream("face/lang/enSAPI.dic"));
@@ -193,7 +177,7 @@ public class XFaceApplication implements GLSurfaceView.Renderer
             {
                 onAdvanceFrame();
                 //m_canvas.repaint();
-                onRenderFrame(p_gl);
+                //onRenderFrame(p_gl);
 
                 synchronize(false);
                 Thread.yield();

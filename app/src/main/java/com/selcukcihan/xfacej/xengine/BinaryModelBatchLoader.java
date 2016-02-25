@@ -35,8 +35,13 @@ package com.selcukcihan.xfacej.xengine;
  * 
  */
 
+import android.content.Context;
+
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.util.LinkedList;
 
@@ -65,8 +70,10 @@ public class BinaryModelBatchLoader implements IModelLoader
 	 */
 	private LinkedList<DrawablePair> m_data;
 
-	public BinaryModelBatchLoader()
+	private final Context mContext;
+	public BinaryModelBatchLoader(Context context)
 	{
+		mContext = context;
 		m_bLoaded = false;
 		m_data = new LinkedList<DrawablePair>();
 	}
@@ -110,6 +117,30 @@ public class BinaryModelBatchLoader implements IModelLoader
 		
 		return retVal;
 	}
+
+	private File createCacheFile(int resourceId, String filename)
+			throws IOException {
+		File cacheFile = new File(mContext.getCacheDir(), filename);
+
+		if (cacheFile.createNewFile() == false) {
+			cacheFile.delete();
+			cacheFile.createNewFile();
+		}
+
+		// from: InputStream to: FileOutputStream.
+		InputStream inputStream = mContext.getResources().openRawResource(resourceId);
+		FileOutputStream fileOutputStream = new FileOutputStream(cacheFile);
+
+		byte[] buffer = new byte[1024 * 512];
+		while (inputStream.read(buffer, 0, 1024 * 512) != -1) {
+			fileOutputStream.write(buffer);
+		}
+
+		fileOutputStream.close();
+		inputStream.close();
+
+		return cacheFile;
+	}
 	
 	public boolean init(final String filename, final String path, final GL11 p_gl)
 	{
@@ -118,14 +149,19 @@ public class BinaryModelBatchLoader implements IModelLoader
 		 */
 		m_bLoaded = false;
 		RandomAccessFile fp = null;
+        File cacheFile = null;
 		try
 		{
-			fp = new RandomAccessFile(path+filename, "r");
+            cacheFile = createCacheFile(mContext.getResources().getIdentifier("alice_dat", "raw", mContext.getPackageName()), "delete-me-please");
+            fp = new RandomAccessFile(cacheFile, "r");
 		}
 		catch(FileNotFoundException fnfe)
 		{
 			/* fnfe.printStackTrace(); */
 		}
+        catch (IOException ioex) {
+
+        }
 		if(fp == null)
 			return false;
 		
@@ -156,7 +192,7 @@ public class BinaryModelBatchLoader implements IModelLoader
 					drname = new byte[sz];
 					fp.read(drname);
 					dr.setTexName(new String(drname), 0);
-					TextureManager.getInstance().load(path + new String(drname), new String(drname), p_gl);
+					TextureManager.getInstance(mContext).load(new String(drname), new String(drname), p_gl);
 	
 					// transform (translation and rotation)
 					Transform tr = new Transform();
@@ -199,6 +235,9 @@ public class BinaryModelBatchLoader implements IModelLoader
 			ioe.printStackTrace();
 			return false;
 		}
+        if (cacheFile != null) {
+            cacheFile.delete();
+        }
 		return true;
 	}
 	
